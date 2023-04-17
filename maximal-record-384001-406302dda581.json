@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "maximal-record-384001",
+  "private_key_id": "406302dda58187ae03bc0ad5e38a0e9e787e1abf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCvavP5ukbSPg6T\nogKOAKA03c0c6gtd96idlw/AoKNa9ekBok73DvUPP4ctLQ8p/QmMvaUByQ8SI4D5\n0PuBvnCT9KheRrUU8Xl+D4ex21BMW6BFkUaUlpNelt8LvpOlmS4B59tMwFMLjDLz\nc2BLh+sVtZCMToETvCX461c5bQJt/TOGENKMYgJNytNnZ5EQGTOT1/WTzqeM4+SK\nHpJO2PYclKeLegHWhqhAuejlriTEVwqqFcXSq9XSv/gtBgCnsxP8zP5dzz5cODgA\nZwnZN5+GIVC3ViLfvWkWBuLzfZIPSUlA+C6i5amwL423KAyc86FWRCtNRJuQQcRw\nhJexsKxTAgMBAAECggEABjNNGWQksbTA1iYRWgyanRPD9sQtD6671ooq49+ptoLf\nsA+ZI/Fy5w2TTRz9HrpTdpaTeQsuzbDUk7/3y9+74fbxZpewOePJLBQHc1lxrqlE\ncoEOkhz6a4sAqk0bsexGrImR/lYD+XIEsQdAfZr5y8QlrlfuBxEM9I35AM4iGloc\nL+qL19p7hU43JVtJtC+J07NbJkq96yPzD+ZiLUvKkAQI1k9FggO4uZrZX/WgRA31\nbcNalAPVxAMxPLZxHuB/j8Xl+KtxxmWvZZAwfSXesstzz7O0fN12e+jDSVpnsmjA\nmiPdVaEqTAoEOokI6ohV2LDXLCK68P1uAfc3+AbqZQKBgQD0n7kWsC6ehw38/Lv3\nXBJJqNzU6n6IDqC6M0cKzdKMN57Tg7iopTe+2xBvg+GrOamuOdRQi8AyNmVpt37D\nUccIZ61Yr9jcN52M1xs9LLd2dyRmS/XokyFnPlMa5Pl3m/R3d0NXW5gP3VYXJePQ\nNJnr4HDualEgycrSgUBp1rTErwKBgQC3k1KfI2Oye+Ut/TdHwwehc39tLJzZm5AA\n+CO38YeBux70bWn0NW1UxzxKfbPqkzeOwILX3ipEpJdrtrXWsL/Y8DCHSAZbwDV2\neaDjPHUgT1ghmldrzPlZ0uxJV6dLtDUL0YBLpdiFoff9cOmtV80YpDgmZmpThPIO\nIGtAj1oDnQKBgQCoMe4sSGU1gLzAdvGyyW6VkPKNvtHTMOOYQ0uUhSJAYLnmysm7\nwyXKJ4tscWxHs7UUYxS1cPFsVPRztMQG/gJwqACLWxUrjV3ZicljzYwzewXfBFmH\nWSp9d1/ivQ8+C1ASmEEIHqU2O0RHVDkIXjJ6+W4Mr7MqbTT0egRVAVh3ZwKBgFD4\np2nQJ0pzwYu+c+KwUK5TDnKuSeTl6+exi7e3zkhXq/iuRhzUcAwD8UD+HxypoMjT\neyMSOFycqLl3Fs/CmGxszUruZveTWUGPtnpkkVkWBk6UEFlZSObo1RYoln8a1ocG\n+mrjlRSkc4kTg87Uun9S9/1gESgTrNy0SfppAJA1AoGBALnwtSWvzFNU7PwcHRH3\n21PpvFyiOf95TTyyjB4ysT0n5P/smKW6VRVTTU7xPVB5pImZMdcDZX10twDWLox+\nNCHy8FR1DiN74/vmKdlXomFkqPU54A8uB9R3b9664r9pbXmtNxvwM/tH3pbgw8vI\nenTTc0rWcK317+BuhfMZFQsy\n-----END PRIVATE KEY-----\n",
+  "client_email": "automl-bigdata-avani@maximal-record-384001.iam.gserviceaccount.com",
+  "client_id": "116883452444678643036",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/automl-bigdata-avani%40maximal-record-384001.iam.gserviceaccount.com"
+}
