@@ -1,0 +1,16 @@
+<form action="/train" method="POST" enctype="multipart/form-data">
+    <label for="name">Select the file for training:</label>
+<select name="name" id="cars">
+    {% for item in data %}
+        <option value="{{item}}">{{item}}</option>
+    {% endfor %}
+
+<input type="radio" id="html" name="training_type" value="Regression">
+<label for="Regression">Regression</label><br>
+<input type="radio" id="css" name="training_type" value="Classification">
+<label for="Classification">Classification</label><br>
+
+
+</select>
+<button>Submit</button>
+</form>
