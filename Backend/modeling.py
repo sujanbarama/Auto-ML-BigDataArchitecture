@@ -21,8 +21,8 @@ warnings.filterwarnings("ignore")
 
 class Modeling:
 
-
-    def regression(self, train_data, y):
+    
+    def regression(self, train_data):
         #Models being trained for regression
         reg_models = [
             KNeighborsRegressor(),
@@ -35,10 +35,10 @@ class Modeling:
             Ridge()
         ]
         #assigning target
-        y_class = train_data[[y]]
+        y_class = train_data[['Target']]
         
         #test train split
-        X_train, X_val, y_train, y_val = train_test_split(train_data.drop(y, axis=1), y_class, test_size=0.2, random_state=100)
+        X_train, X_val, y_train, y_val = train_test_split(train_data.drop('Target', axis=1), y_class, test_size=0.2, random_state=100)
         
         res = {}
         #modeling
@@ -148,7 +148,7 @@ class Modeling:
         return best_model
     
 
-    def classification(self, train_data, y):
+    def classification(self, train_data):
         #classification models
         classifiers = [
         XGBClassifier(),
@@ -159,9 +159,9 @@ class Modeling:
         ]
 
         #target variable 
-        y_class = train_data[[y]]
+        y_class = train_data[['Target']]
         #train test split
-        X_train, X_val, y_train, y_val = train_test_split(train_data.drop(y, axis=1), y_class, test_size=0.2, random_state=100)
+        X_train, X_val, y_train, y_val = train_test_split(train_data.drop('Target', axis=1), y_class, test_size=0.2, random_state=100)
 
         res = {}
         #modeling
