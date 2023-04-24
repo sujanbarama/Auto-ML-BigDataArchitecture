@@ -30,3 +30,22 @@ cleaned_data.to_csv('my_cleaned_data.csv', index=False)
 # Modeling
 
 This script contains a Modeling class with methods to train regression and classification models. The regression method uses eight models (KNeighborsRegressor, LinearRegression, GradientBoostingRegressor, ExtraTreesRegressor, RandomForestRegressor, DecisionTreeRegressor, Lasso, and Ridge), and for each model, it performs hyperparameter tuning with randomized search cross-validation. The best model is selected based on its performance on a validation set with minimum RMSE. The classification method trains six models (XGBClassifier, RandomForestClassifier, GradientBoostingClassifier, DecisionTreeClassifier, LogisticRegression, and ExtraTreesClassifier) and selects the best-performing model evaluated using the F1 score and balanced accuracy.
+
+### Example Usage
+```
+import pandas as pd
+from modeling import Modeling
+
+# Load the data
+data = pd.read_csv("data.csv")
+
+# Create an instance of the Modeling class
+model = Modeling()
+
+# Train a regression model on the data
+best_regression_model = model.regression(data)
+
+# Train a classification model on the data
+best_classification_model = model.classification(data)
+
+```
