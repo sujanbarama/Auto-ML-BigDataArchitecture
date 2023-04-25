@@ -52,7 +52,7 @@
     <br><br>
     <!-- First Row [Statistics]-->
     <h2 class="text-center font-weight-bold mb-2" >Choose option</h2>
-    <p class="text-center font-italic text-muted mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
+    <p class="text-center font-italic text-muted mb-4">Please ensure that the dataset being uploaded contains a target variable with the name 'Target'. This is a required field that is used in our analysis and model building processes.</p>
     
    
     <div class="row">
@@ -60,10 +60,11 @@
         <div  class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Upload CSV</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <p class="card-text">Please upload your data set here. Note that presently only .csv files are accepted.</p>
             <!-- <a href="upload.html" class="btn btn-primary">Upload</a> -->
+            <br><br>
             <form action="/uploading">
-              <input class="btn btn-primary" type="submit">Upload</input>
+              <input class="btn btn-primary" type="submit"></input>
             </form>
 
           </div>
@@ -73,7 +74,7 @@
         <div class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Preprocess</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <p class="card-text">If you would like us to perform preprocessing on your dataset, please upload it here. Our preprocessing steps include data cleaning, variable encoding, and data normalization.</p>
             <a href="preprocess.html" class="btn btn-primary">Preprocess</a>
           </div>
         </div>
@@ -85,7 +86,8 @@
         <div class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Train Model</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <p class="card-text">If your data has already been preprocessed and you only need to train regression or classification models on it, kindly upload it here.</p>
+            <br>
             <a href="training.html" class="btn btn-primary">Train</a>
           </div>
         </div>
@@ -94,7 +96,7 @@
         <div class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Predict</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <p class="card-text">If you have previously trained your data using our regression or classification models, please click here to generate predictions and download the resulting file.</p>
             <a href="predict.html" class="btn btn-primary">Predict</a>
           </div>
         </div>
