@@ -25,9 +25,9 @@
     <script src="jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
     <script src="Agent.js"></script><!-- sketch additions -->
-    
     <script type="text/javascript">
-    window.onload = function () {
+    const chart_data = {{ data | tojson }}
+    window.onload = function (chart_data) {
       var chart = new CanvasJS.Chart("chartContainer",
       {
         title:{
@@ -35,36 +35,14 @@
         },
         data: [
         {
-          type: "bar",
+          type: "column",
           dataPoints: [
-          { y: 198, label: "A"},
-          { y: 201, label: "B"},
-          { y: 202, label: "C"},
+          // { y: chart_data['DecisionTreeClassifier']['Accuracy'], label: "DecisionTreeClassifier"},
+          // { y: chart_data['GradientBoostingClassifier']['Accuracy'], label: "GradientBoostingClassifier"},
+          { y: chart_data['DecisionTreeClassifier']['Accuracy'], label: "DecisionTreeClassifier"},
           { y: 236, label: "D"},
           { y: 395, label: "E"},
           { y: 957, label: "F"}
-          ]
-        },
-        {
-          type: "bar",
-          dataPoints: [
-          { y: 166, label: "A"},
-          { y: 144, label: "B"},
-          { y: 223, label: "C"},
-          { y: 272, label: "D"},
-          { y: 319, label: "E"},
-          { y: 759, label: "F"}
-          ]
-        },
-        {
-          type: "bar",
-          dataPoints: [
-          { y: 185, label: "A"},
-          { y: 128, label: "B"},
-          { y: 246, label: "C"},
-          { y: 272, label: "D"},
-          { y: 296, label: "C"},
-          { y: 666, label: "USA"}
           ]
         }
         ]

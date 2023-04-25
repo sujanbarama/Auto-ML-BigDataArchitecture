@@ -13,6 +13,34 @@ import seaborn as sns
 from sklearn.impute import KNNImputer
 from sklearn.preprocessing import RobustScaler
 
+from sklearn.model_selection import train_test_split
+
+from sklearn.metrics import r2_score, mean_squared_error
+
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import GradientBoostingRegressor, ExtraTreesRegressor, RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import RandomizedSearchCV
+from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+import string
+import random
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+import pickle
+from flask import Flask
+from sklearn.metrics import balanced_accuracy_score, f1_score
+from scipy import stats
+
+import warnings
+warnings.filterwarnings('ignore')
+
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'C:\sujan\git learning\git\bigdata\automl-bigdata-7c2859c8477a.json' 
 def cloud_read(bucket_name, blob_name):
     storage_client = storage.Client()
@@ -45,6 +73,26 @@ def list_blobs(bucket_name):
             ll.append(blob.name)
     return ll
 
+def list_blobs_preprocessed(bucket_name):
+    # bucket_name = "your-bucket-name"
+    storage_client = storage.Client()
+    # Note: Client.list_blobs requires at least package version 1.17.0.
+    blobs = storage_client.list_blobs(bucket_name)
+    # Note: The call returns a response only when the iterator is consumed.
+    # ll = []
+    for blob in blobs:
+        if blob.name.endswith('_preprocessed.csv'):
+            ll = blob.name
+    return ll
+
+def connection():
+  cred = credentials.Certificate('/content/auto-ml-af39c-firebase-adminsdk-37cmd-35f3911f5e.json')
+  try:
+    app = firebase_admin.initialize_app(cred)
+  except:
+    app = firebase_admin.initialize_app(cred, name = str(random.random()))
+  return firestore.client()
+
 app = Flask(__name__)
 ALLOWED_EXTENSIONS = set(['csv'])
 
@@ -68,6 +116,31 @@ def home():
 def uploading():
     return render_template('upload.html')
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+  print('asjbakjbsd')
+  #if request.method == 'POST':
+  print(request)
+  file = request.files['file']
+  if file and allowed_file(file.filename):
+      filename = secure_filename(file.filename)
+      new_filename = f'{filename.split(".")[0]}.csv'
+      save_location = os.path.join(r'C:\sujan\git learning\git\bigdata\input', new_filename)
+      file.save(save_location)
+      cloud_write('automl-bigdataarch', new_filename ,save_location)
+  csv_files = list_blobs('automl-bigdataarch')
+  csv_files = [i.split('/')[-1] for i in csv_files]
+  return render_template('preprocess.html', data = csv_files)
+
+            #output_file = process_csv(save_location)
+            #return send_from_directory('output', output_file)
+            #return redirect(url_for('download'))
+    # csv_files = list_blobs('automl-bigdataarch')
+    # csv_files = [i.split('/')[-1] for i in csv_files]
+    
+    # return render_template('preprocess.html', data = csv_files)
+
+
 @app.route('/preprocess', methods=['GET', 'POST'])
 def preprocess():
     csv_files = list_blobs('automl-bigdataarch')
@@ -78,14 +151,9 @@ def preprocess():
 def preprocessResults():
     return render_template('preprocessResults.html')
 
-@app.route('/download/<path:filename>', methods=['GET'])
-def download(filename):
-    """Download a file."""
-    
-    full_path = os.path.join(app.root_path, r'C:\sujan\git learning\git\bigdata\input')
-    
-    return send_from_directory(full_path, 'orange_vs_grapefruit_raw.csv', as_attachment=True)
-
+@app.route('/Trainbutton', methods=['GET', 'POST'])
+def Trainbutton():
+    return render_template('training.html')
 
 
 def normalize_and_encode(imputed_data):
@@ -189,53 +257,239 @@ def impute():
       }
     imputed_data = normalize_and_encode(imputed_data)
     
+    raw = 'C:\\sujan\\git learning\\git\\bigdata\\input\\'
+    imputed_data.to_csv('{}{}_preprocessed.csv'.format(raw, filename.split('.')[0]),index = False)
+    cloud_write('automl-bigdataarch', f'{filename.split(".")[0]}_preprocessed.csv','{}{}_preprocessed.csv'.format(raw, filename.split('.')[0]))
 
-    imputed_data.to_csv('upload_imputed.csv',index = False)
-    cloud_write('automl-bigdataarch', f'{filename.split(".")[0]}_preprocessed.csv','upload_imputed.csv')
-    #data = {"file":r"C:\sujan\git learning\git\bigdata\upload_imputed.csv"}
-    # data = {'Raw_numericalvalues': 17,
-    #             'Raw_categoricalvalues': 0,
-    #             'Raw_columns': 17,
-    #             'Raw_rows': 792,
-    #             'Raw_missing': 0,
-    #         'Imputed_numericalvalues': 17,
-    #         'Imputed_categoricalvalues': 0,
-    #         'Imputed_columns': 17,
-    #         'Imputed_rows': 792,
-    #         'Imputed_missingvalues': 0}
     return render_template('preprocessResults.html', data = frontend_data)
 
     #return render_template('preprocess.html', data = csv_files)
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST':
-        print(request)
-        file = request.files['file']
-        # print(len(file))
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            new_filename = f'{filename.split(".")[0]}_raw.csv'
-            save_location = os.path.join(r'C:\sujan\git learning\git\bigdata\input', new_filename)
-            file.save(save_location)
-            cloud_write('automl-bigdataarch', new_filename ,save_location)
+#TRAINING
+#Regression
+@app.route('/Regression', methods=['GET', 'POST'])
+def regression():
+  file_name = list_blobs_preprocessed("automl-bigdataarch")
+  train_data =pd.read_csv("C:\\sujan\\git learning\\git\\bigdata\\input\\{}".format(file_name))
+  reg_models = [
+    KNeighborsRegressor(),
+    LinearRegression(),
+    GradientBoostingRegressor(),
+    ExtraTreesRegressor(),
+    RandomForestRegressor(),
+    DecisionTreeRegressor(),
+    Lasso(),
+    Ridge()
+]
+  #db = connection()  
+  y_class = train_data[['Target']]
+  
+  X_train, X_val, y_train, y_val = train_test_split(train_data.drop('Target', axis=1), y_class, test_size=0.2, random_state=100)
+  
+  res = {}
+  
+  KNeighborsRegressor_grid = {
+      'n_neighbors':[2,5,10], 
+      'weights': ['uniform', 'distance'], 
+      'algorithm': ['auto','ball_tree','kd_tree','brute'],
+      'leaf_size': [15,30,45],
+      }
 
+  GradientBoostingRegressor_grid = {
+      'loss':['squared_error', 'absolute_error', 'huber', 'quantile'],
+      'learning_rate':[0.1,0.5,0.8],
+      'n_estimators':[10,50,100]
+  }
 
-            #output_file = process_csv(save_location)
-            #return send_from_directory('output', output_file)
-            #return redirect(url_for('download'))
-    # csv_files = list_blobs('automl-bigdataarch')
-    # csv_files = [i.split('/')[-1] for i in csv_files]
+  ExtraTreesRegressor_grid = {
+      'n_estimators':[10,50,100],
+      'criterion':['squared_error', 'absolute_error', 'friedman_mse', 'poisson']
+  }
+
+  RandomForestRegressor_grid = {
+      'n_estimators':[10,50,100],
+      'criterion':['squared_error', 'absolute_error', 'friedman_mse', 'poisson']
+  }
+
+  DecisionTreeRegressor_grid = {
+      'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+      'splitter':['best','random']
+  }
+
+  LinearRegression_grid = {
+    'fit_intercept': [True, False]
+  }
+
+  Lasso_grid = {
+      'alpha': [0.1, 0.2, 0.5],
+      'fit_intercept': [True, False]
+  }
+  Ridge_grid = {
+       'alpha': [0.1, 0.2, 0.5],
+      'fit_intercept': [True, False]
+  }
+  
+ 
+  params = { 
+      'KNeighborsRegressor': KNeighborsRegressor_grid,
+      'GradientBoostingRegressor': GradientBoostingRegressor_grid,
+      'ExtraTreesRegressor': ExtraTreesRegressor_grid,
+      'RandomForestRegressor': RandomForestRegressor_grid,
+      'DecisionTreeRegressor': DecisionTreeRegressor_grid,
+      'LinearRegression': LinearRegression_grid, 
+      'Lasso': Lasso_grid,
+      'Ridge':Ridge_grid
+    }
+
+  clf = {}
+
+  for reg in reg_models:
+    name = reg.__class__.__name__  
+    try:
+      clf[name] = RandomizedSearchCV(reg, params[name], random_state=0)
+    except:
+      print(name)
+      continue
+    results = clf[name].fit(X_train, y_train)
+    print(results.best_params_)
+    r2 = round(r2_score(y_val, clf[name].predict(X_val)), 3)
+    rmse = round(mean_squared_error(y_val, clf[name].predict(X_val)), 3)
+    N = 16
+ 
+    # string_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k = N))
+
+    # while string_name in db.collection(u'models').stream():
+    #     string_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k = N))
+
+    print("{} trained with an RMSE of : {} and an accuracy of: {}".format(name, rmse, r2))
     
-    # return render_template('preprocess.html', data = csv_files)
+    res[name] = {
+        'RMSE': rmse,
+         'r2': r2,
+         'params': results.best_params_
+      }  
 
-# @app.route('/download')
-# def download():
-#     return render_template('download.html', files=os.listdir('output'))
+  rmse_list = []
+  r2_list = []
+  names = list(res.keys())
+  for name in res:
+    rmse_list.append(res[name]['RMSE'])
+    r2_list.append(res[name]['r2'])
 
-# @app.route('/download/<filename>')
-# def download_file(filename):
-#     return send_from_directory('output', filename)
+  if rmse_list.count(min(rmse_list)) > 1:
+    best_model = names[r2_list.index(max(r2_list))]
+  else:
+    best_model = names[rmse_list.index(min(rmse_list))]
+
+  print(best_model, clf[best_model].get_params())
+  pickle.dump(clf[best_model], open('model.pkl', 'wb'))
+  cloud_write('automl-bigdataarch', 'model.pkl', 'model.pkl')
+  #db.collection(u'models').document(string_name).set(res)
+  return render_template('results.html')
+
+#Classification
+@app.route('/Classification', methods=['GET', 'POST'])
+def classification():
+  file_name = list_blobs_preprocessed("automl-bigdataarch")
+  train_data =pd.read_csv("C:\\sujan\\git learning\\git\\bigdata\\input\\{}".format(file_name))
+  #db = connection()  
+  classifiers = [
+    XGBClassifier(),
+    RandomForestClassifier(),
+    GradientBoostingClassifier(),
+    LogisticRegression(),
+    DecisionTreeClassifier()
+    ]
+  y_class = train_data[['Target']]
+  X_train, X_val, y_train, y_val = train_test_split(train_data.drop('Target', axis=1), y_class, test_size=0.2, random_state=100)
+
+  res = {}
+  
+  XGBClassifier_grid = {
+      'n_estimators': stats.randint(50, 100),
+      'learning_rate': stats.uniform(0.01, 0.59),
+      'subsample': stats.uniform(0.3, 0.6),
+      'max_depth': [3, 4, 5],
+      'colsample_bytree': stats.uniform(0.5, 0.4),
+      'min_child_weight': [1, 2, 3, 4]
+      }
+
+  RandomForestClassifier_grid = {
+      'n_estimators':[10,50,100],
+      'criterion':['gini', 'entropy', 'log_loss']
+  }
+
+  GradientBoostingClassifier_grid = {
+      'loss':['log_loss', 'deviance', 'exponential'],
+      'learning_rate':[0.1,0.5]
+        }
+
+  LogisticRegression_grid = {
+    'penalty': ['l1', 'l2'],
+    'dual':[True, False],
+    'fit_intercept':[True,False]
+  }
+
+  DecisionTreeClassifier_grid = {
+    'criterion': ['gini', 'entropy', 'log_loss'],
+    'splitter':['best', 'random']
+  }
+  
+  params = { 
+      'XGBClassifier': XGBClassifier_grid,
+      'RandomForestClassifier': RandomForestClassifier_grid,
+      'GradientBoostingClassifier': GradientBoostingClassifier_grid,
+      'LogisticRegression': LogisticRegression_grid,
+      'DecisionTreeClassifier':DecisionTreeClassifier_grid
+    }
+    
+  clf = {}
+  
+  for clf1 in classifiers:
+    name = clf1.__class__.__name__
+    try:
+      clf[name] = RandomizedSearchCV(clf1, params[name], random_state=0)
+    except:
+        print(name)
+        continue 
+
+    results = clf[name].fit(X_train, y_train)
+    print(results.best_params_)        
+    acc = round(balanced_accuracy_score(y_val, clf[name].predict(X_val)), 3)
+    f1 = round(f1_score(y_true=y_val, y_pred = clf[name].predict(X_val), average='weighted'), 3)
+
+    N = 16
+
+    # string_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k = N))
+
+    # while string_name in db.collection(u'models').stream():
+    #     string_name = ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k = N))
+
+    print("{} trained with an F1 of : {} and an accuracy of: {}".format(name, f1, acc))
+
+    res[name] = {
+        'Accuracy': acc,
+        'F1Score': f1,
+        'params': results.best_params_
+      }  
+
+  acc_list = []
+  f1_list = []
+  names = list(res.keys())
+  for name in res:
+    acc_list.append(res[name]['Accuracy'])
+    f1_list.append(res[name]['F1Score'])
+
+  if acc_list.count(max(acc_list)) > 1:
+    best_model = names[f1_list.index(max(f1_list))]
+  else:
+    best_model = names[acc_list.index(max(acc_list))]
+
+  print(best_model, clf[best_model].get_params())
+  pickle.dump(clf[best_model], open('model.pkl', 'wb'))
+  cloud_write('automl-bigdataarch', 'model.pkl', 'model.pkl')
+  #db.collection(u'models').document(string_name).set(res)
+  return render_template('results.html', data = res)
 
 
 if __name__ == '__main__':
