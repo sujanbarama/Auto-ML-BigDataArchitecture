@@ -251,7 +251,7 @@ class Modeling:
         # pickle.dump(clf[best_model], open('model.pkl', 'wb'))
         # cloud_access('automl-bigdata', 'model.pkl', 'model.pkl')
         # db.collection(u'models').document(string_name).set(res)
-        return best_model
+        return best_model, res
     
 
             

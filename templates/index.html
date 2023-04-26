@@ -5,51 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Machine Learning Model</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel='stylesheet' type='text/css' href='static/css/styles.css'>
+    <link rel='stylesheet' type='text/css' href='https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/static/css/styles.css'>
 
-    <script src="p5.min.js"></script>
-        <script src="p5.dom.min.js"></script>
-        <script src="p5.sound.min.js"></script>
+    <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/p5.min.js"></script>
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/p5.dom.min.js"></script>
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/p5.sound.min.js"></script>
     
         <!-- Generative Design Dependencies here -->
         <!-- GG Bundled -->
-        <script src="gg-dep-bundle.js"></script>
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/gg-dep-bundle.js"></script>
         <!-- Opentype -->
-        <script src="opentype.min.js"></script>
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/opentype.min.js"></script>
         <!-- Rita -->
-        <script src="rita-small.min.js"></script>
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/rita-small.min.js"></script>
         <!-- Chroma -->
-        <script src="chroma.min.js"></script>
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/chroma.min.js"></script>
         <!-- Jquery -->
-        <script src="jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    
-        <script src="Agent.js"></script><!-- sketch additions -->
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous" type="text/javascript" referrerpolicy="no-referrer"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+        <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/Agent.js"></script><!-- sketch additions -->
 
   </head>
   <body>
 
                <!-- main -->
-               <script src="sketch.js"></script>
-               <script src="vehicle.js"></script>
-               <script src="Agent.js"></script>
+               <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/sketch.js"></script>
+               <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/vehicle.js"></script>
+               <script src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/templates/Agent.js"></script>
 
-    <nav class="navbar navbar-light bg-light">
+    <!-- <nav class="navbar navbar-light bg-light">
       <a class="navbar-brand" href="index.html">
         <img src="static/img/pngegg.png" width="40" height="40"  style="margin-left:20px" alt="">
         Home
       </a>
-    </nav>
+    </nav> -->
 
-    <br><br>
-    <div class="card mx-auto" style="width: 50%; padding: 2%; border: none;">
+    <div class="card mx-auto" style="width: 50%; border: none;">
     <header class="text-center mb-5">
-        <h1 class="display-4 font-weight-bold">Machine Learning Model</h1>
+      <img src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/logo.jpg" width="500vw" height="250vh" style="margin-left:20px" alt="">
         <p class="font-italic text-muted mb-0">Welcome.</p>
     </header>
   
 
-
-    <br><br>
     <!-- First Row [Statistics]-->
     <h2 class="text-center font-weight-bold mb-2" >Choose option</h2>
     <p class="text-center font-italic text-muted mb-4">Please ensure that the dataset being uploaded contains a target variable with the name 'Target'. This is a required field that is used in our analysis and model building processes.</p>
@@ -60,11 +57,11 @@
         <div  class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Upload CSV</h5>
-            <p class="card-text">Please upload your data set here. Note that presently only .csv files are accepted.</p>
+            <p class="card-text" style="text-align:justify;" >Please upload your data set here. Note that presently only .csv files are accepted.</p>
             <!-- <a href="upload.html" class="btn btn-primary">Upload</a> -->
             <br><br>
             <form action="/uploading">
-              <input class="btn btn-primary" type="submit"></input>
+              <button class="btn btn-primary" type="submit" style="width: 40%;">Upload</button>
             </form>
 
           </div>
@@ -74,8 +71,8 @@
         <div class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Preprocess</h5>
-            <p class="card-text">If you would like us to perform preprocessing on your dataset, please upload it here. Our preprocessing steps include data cleaning, variable encoding, and data normalization.</p>
-            <a href="preprocess.html" class="btn btn-primary">Preprocess</a>
+            <p class="card-text" style="text-align:justify;">If you would like us to perform preprocessing on your dataset, please upload it here. Our preprocessing steps include data cleaning, variable encoding, and data normalization.</p>
+            <a href="preprocess.html" class="btn btn-primary" style="width: 40%;">Preprocess</a>
           </div>
         </div>
       </div>
@@ -86,9 +83,9 @@
         <div class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Train Model</h5>
-            <p class="card-text">If your data has already been preprocessed and you only need to train regression or classification models on it, kindly upload it here.</p>
+            <p class="card-text" style="text-align:justify;">If your data has already been preprocessed and you only need to train regression or classification models on it, kindly upload it here.</p>
             <br>
-            <a href="training.html" class="btn btn-primary">Train</a>
+            <a href="training.html" class="btn btn-primary" style="width: 40%;">Train</a>
           </div>
         </div>
       </div>
@@ -96,14 +93,16 @@
         <div class="card rounded shadow-sm border-0">
           <div class="card-body">
             <h5 class="card-title">Predict</h5>
-            <p class="card-text">If you have previously trained your data using our regression or classification models, please click here to generate predictions and download the resulting file.</p>
-            <a href="predict.html" class="btn btn-primary">Predict</a>
+            <p class="card-text" style="text-align:justify;">If you have previously trained your data using our regression or classification models, please click here to generate predictions and download the resulting file.</p>
+            <br>
+            <a href="predict.html" class="btn btn-primary" style="width: 40%;">Predict</a>
+            <br>
           </div>
         </div>
       </div>
     </div>
 
-    <br><br>
+    <!-- <br><br>
     <h4 class="text-center font-weight-bold mb-2" >User history</h4>
     <div class="card rounded shadow-sm border-0" style="width: 100%;">
     <br>
@@ -114,7 +113,7 @@
       <li class="list-group-item">Porta ac consectetur ac</li>
       <li class="list-group-item">Vestibulum at eros</li>
     </ul>
-    <br>
+    <br> -->
 
   
   

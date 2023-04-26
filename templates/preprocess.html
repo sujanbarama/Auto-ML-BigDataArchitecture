@@ -37,8 +37,8 @@
 
         <nav class="navbar navbar-light bg-light">
             <a class="navbar-brand" href="index.html">
-              <img src="static/img/pngegg.png" width="40" height="40" style="margin-left:20px" alt="">
-              Home
+              <img src="https://raw.githubusercontent.com/sujanbarama/Auto-ML-BigDataArchitecture/master/logo.jpg" width="160vw" height="90vh" style="margin-left:20px" alt="">
+              
             </a>
         </nav>
         
@@ -46,7 +46,8 @@
         <div class="card mx-auto" style="width: 50%; padding: 2%; border: none;">
         <header class="text-center mb-5">
             <h1 class="display-4 font-weight-bold">Preprocess</h1>
-            <p class="font-italic text-muted mb-0">asdasdasdasdasdasdasd.</p>
+            <p class="font-italic text-muted mb-0" style="text-align:center;">If you would like us to perform preprocessing on your dataset, please upload it here. Our preprocessing steps include data cleaning, variable encoding, and data normalization. 
+            </p>
         </header>
     
     
@@ -71,26 +72,36 @@
                             <br><br><br>
 
                             <!-- <a href="preprocessResults.html" class="btn btn-primary">Submit</a> -->
-
-                            <form action="/impute" method="POST">
-                              <select name="files" id="files">
+                            <p class="font-italic text-muted mb-0">Choose the Dataset for Preprocessing.</p>
+                            <br>
+                            <form action="/impute" method="POST" style="padding: 2%;">
+                              <select name="files" id="files" style="padding: 3%;">
                                 {% for i in data %}
                                  <option value='{{ i }}'>{{ i }}</option>
                                 {% endfor %}
                               </select>
-  
-                              <input class="btn btn-primary" type="submit">Submit</input>
+                              <br>
+                              <br>
+                              <button class="btn btn-primary" type="submit">Submit</button>
                             </form>
 
                           </div>
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-6" >
                   <div class="card rounded shadow-sm border-0">
-                    <div class="card-body">
+                    <div class="card-body" style="padding: 2%;">
                       <h5 class="card-title">How does it work</h5>
-                      <p class="card-text">Here we can talk about all the preprocessing steps we are doing. We need to add some content here. So we can tell what we are doing in the backend.(content tbd)
+                      <p class="card-text" style="text-align:justify;"><b>Data cleaning:</b> This step involves removing irrelevant or redundant data, handling missing values, and dealing with outliers.
+                        <br>
+                        <b>Data transformation:</b> This step involves transforming the data into a suitable format that can be used by machine learning algorithms. This includes converting categorical data into numerical data, scaling and normalizing numerical data, and encoding features.
+                        <br>
+                        <b>Selection</b> : This step involves selecting the most relevant features from the dataset. This helps to reduce the complexity of the model and improve its accuracy.
+                        <br>
+                        <b>Dimensionality reduction:</b> This step involves reducing the number of features in the dataset by eliminating redundant or correlated features. This helps to improve the efficiency of the model and reduce overfitting.
+                        <br>
+                        <b>Data splitting:</b> This step involves splitting the dataset into training, validation, and testing sets. The training set is used to train the model, the validation set is used to tune the hyperparameters of the model, and the testing set is used to evaluate the performance of the model on new data.
                     </p>
                       
                     </div>

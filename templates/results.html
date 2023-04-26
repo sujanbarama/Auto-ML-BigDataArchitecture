@@ -25,9 +25,22 @@
     <script src="jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
     <script src="Agent.js"></script><!-- sketch additions -->
+    <div id="res" DecisionTreeClassifier="{{ data['DecisionTreeClassifier'] }}" XGBClassifier="{{ data['XGBClassifier'] }}" RandomForestClassifier="{{ data['RandomForestClassifier'] }}" GradientBoostingClassifier="{{ data['GradientBoostingClassifier'] }}" LogisticRegression="{{ data['LogisticRegression'] }}">
+    </div>
     <script type="text/javascript">
-    const chart_data = {{ data | tojson }}
-    window.onload = function (chart_data) {
+      window.onload = function () {
+        var DecisionTreeClassifier = document.getElementById('res').getAttribute('DecisionTreeClassifier')
+        const dt =  parseFloat(DecisionTreeClassifier.slice(13, 17));
+        // console.log(dt);
+        var XGBClassifier = document.getElementById('res').getAttribute('XGBClassifier')
+        const xgb =  parseFloat(XGBClassifier.slice(13, 17));
+        var RandomForestClassifier = document.getElementById('res').getAttribute('RandomForestClassifier')
+        const rfc =  parseFloat(RandomForestClassifier.slice(13, 17));
+        var GradientBoostingClassifier = document.getElementById('res').getAttribute('GradientBoostingClassifier')
+        const gbc =  parseFloat(GradientBoostingClassifier.slice(13, 17));
+        var LogisticRegression = document.getElementById('res').getAttribute('LogisticRegression')
+        const lr =  parseFloat(LogisticRegression.slice(13, 17));
+        // console.log(dt, lr, xgb, rfc, gbc);
       var chart = new CanvasJS.Chart("chartContainer",
       {
         title:{
@@ -39,10 +52,12 @@
           dataPoints: [
           // { y: chart_data['DecisionTreeClassifier']['Accuracy'], label: "DecisionTreeClassifier"},
           // { y: chart_data['GradientBoostingClassifier']['Accuracy'], label: "GradientBoostingClassifier"},
-          { y: chart_data['DecisionTreeClassifier']['Accuracy'], label: "DecisionTreeClassifier"},
-          { y: 236, label: "D"},
-          { y: 395, label: "E"},
-          { y: 957, label: "F"}
+          // { y: chart_data['DecisionTreeClassifier']['Accuracy'], label: "DecisionTreeClassifier"},
+          { y: dt, label: "DecisionTreeClassifier"},
+          { y: lr, label: "LogisticRegression"},
+          { y: gbc, label: "GradientBoostingClassifier"},
+          { y: rfc, label: 'RandomForestClassifier'},
+          { y: xgb, label: 'XGBoostClassifier'}
           ]
         }
         ]
@@ -79,6 +94,9 @@
     
   <div id="chartContainer" style="height: 300px; width: 100%;">
   </div>
+  <form action="/predictions">
+    <button type="submit">predictions</button>
+  </form>
 </div>
 
 </body>
