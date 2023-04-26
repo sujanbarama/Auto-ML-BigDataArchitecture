@@ -64,6 +64,7 @@ class Cleaning:
         data_for_enc.drop(cat_cols_to_drop, axis=1, inplace=True)
         
         # encoding categorical variables
+<<<<<<< Updated upstream
         enc_data= pd.get_dummies(data_for_enc, columns=data_for_enc.columns)
     
         if 'Target' in imputed_data.columns:
@@ -72,6 +73,17 @@ class Cleaning:
             encoded_data = pd.concat([scaled, enc_data], axis=1)
         # return imputed_data
 
+=======
+        print(data_for_enc.columns)
+        try:
+            enc_data= pd.get_dummies(data_for_enc, columns=data_for_enc.columns)
+        # print(scaled.columns,1)
+        # print(enc_data.columns,2)
+            encoded_data = pd.concat([scaled, enc_data, target], axis=1)
+        except:
+            
+            encoded_data = scaled.copy()
+>>>>>>> Stashed changes
         encoded_data.to_csv('upload_encoded.csv',index = False)
         return encoded_data
     

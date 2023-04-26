@@ -140,8 +140,8 @@ class Modeling:
 
         
     # have to put this in the server file
-        # pickle.dump(clf[best_model], open('model.pkl', 'wb'))
-        # cloud_access('automl-bigdata', 'model.pkl', 'model.pkl')
+        pickle.dump(clf[best_model], open('model.pkl', 'wb'))
+        cloud_access('automl-bigdata', 'model.pkl', 'model.pkl')
         # db.collection(u'models').document(string_name).set(res)
 
 
@@ -247,9 +247,9 @@ class Modeling:
 
         print(best_model, clf[best_model].get_params())
 
-        #will remove once added to server file
-        # pickle.dump(clf[best_model], open('model.pkl', 'wb'))
-        # cloud_access('automl-bigdata', 'model.pkl', 'model.pkl')
+        # will remove once added to server file
+        pickle.dump(clf[best_model], open('model.pkl', 'wb'))
+        cloud_access('automl-bigdata', 'model.pkl', 'model.pkl')
         # db.collection(u'models').document(string_name).set(res)
         return best_model, res
     
