@@ -109,6 +109,10 @@ def preprocess():
 def preprocessResults():
     return render_template('preprocessResults.html')
 
+@app.route('/index', methods=['GET', 'POST'])
+def index():
+    return render_template('login.html')
+
 @app.route('/Trainbutton', methods=['GET', 'POST'])
 def Trainbutton():
     return render_template('training.html')
@@ -167,11 +171,14 @@ def preprocessing():
     
     imputed_data = cleaner.normalize_and_encode(imputed_data)
     
+    raw = 'C:\\Users\\arman\\Documents\\GitHub\\Auto-ML-BigDataArchitecture\\input\\'
+    imputed_data.to_csv('{}{}_preprocessed.csv'.format(raw, filename.split('.')[0]),index = False)
+    cloud_write('automl-bigdataarch', f'{filename.split(".")[0]}_preprocessed.csv','{}{}_preprocessed.csv'.format(raw, filename.split('.')[0]))
 
-    imputed_data.to_csv('upload_imputed.csv',index = False)
-    cloud_write('automl-bigdataarch', f'{filename.split(".")[0]}_preprocessed.csv','upload_imputed.csv')
+    # imputed_data.to_csv('upload_imputed.csv',index = False)
+    # cloud_write('automl-bigdataarch', f'{filename.split(".")[0]}_preprocessed.csv','upload_imputed.csv')
+    # return render_template('preprocessResults.html', data = frontend_data)
     return render_template('preprocessResults.html', data = frontend_data)
-    #return render_template('preprocess.html', data = csv_files)
 
 #TRAINING
 #Regression
@@ -182,12 +189,12 @@ def regressor():
   file_name = list_blobs_preprocessed("automl-bigdataarch")
   train_data =pd.read_csv("C:\\Users\\arman\\Documents\\GitHub\\Auto-ML-BigDataArchitecture\\input\\{}".format(file_name))
   
-  best_model=trainer.regression(train_data)
+  best_model, res=trainer.regression(train_data)
 
   # pickle.dump(clf[best_model], open('model.pkl', 'wb'))
   # cloud_write('automl-bigdataarch', 'model.pkl', 'model.pkl')
   #db.collection(u'models').document(string_name).set(res)
-  return render_template('results.html')
+  return render_template('results.html', data = res)
 
 #Classification
 @app.route('/Classification', methods=['GET', 'POST'])
@@ -195,13 +202,40 @@ def classifier():
   file_name = list_blobs_preprocessed("automl-bigdataarch")
   train_data =pd.read_csv("C:\\Users\\arman\\Documents\\GitHub\\Auto-ML-BigDataArchitecture\\input\\{}".format(file_name))
   
-  best_model=trainer.classification(train_data)
+  best_model, res = trainer.classification(train_data)
 
   # pickle.dump(clf[best_model], open('model.pkl', 'wb'))
   # cloud_write('automl-bigdataarch', 'model.pkl', 'model.pkl')
   #db.collection(u'models').document(string_name).set(res)
-  return render_template('results.html')
+  return render_template('results.html', data = res)
 
+@app.route('/predictions', methods = ['GET', 'POST'])
+def predictions():
+   return render_template('predict.html')
+
+@app.route('/predictionresults', methods = ['GET', 'POST'])
+def prediction_results():
+   
+   test=cloud_read("automl-bigdataarch", 'titanic_test.csv')
+   test=cleaner.impute(test)
+   test=cleaner.normalize_and_encode(test)
+   def cloud_read_pickle(bucket_name, blob_name):
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(blob_name)
+    pickle_in = blob.download_as_string()
+    my_dictionary = pickle.loads(pickle_in)
+    #pickled_model = pickle.load(open(data, 'rb'))
+    print(f'Pulled down file from bucket {bucket_name}, file name: {blob_name}')
+    return my_dictionary
+   
+   pickled_model=cloud_read_pickle('automl-bigdataarch','model.pkl')
+   test.drop('Target', axis = 1, inplace = True)
+   pred_file = pickled_model.predict(test)
+#    pd.DataFrame({'id': range(len(pred_file)), 'Predictions'})
+   print(pred_file) 
+   pd.DataFrame({"Predictions":pred_file}).to_csv("pred_file.csv",index=False)
+   return render_template('predictResults.html')
 
 if __name__ == '__main__':
  

@@ -15,13 +15,13 @@ import random
 from sklearn.metrics import balanced_accuracy_score, f1_score
 from scipy import stats
 import warnings
+import pickle
+from google.cloud import storage
 warnings.filterwarnings("ignore")
      
 
 
 class Modeling:
-
-    
     def regression(self, train_data):
         #Models being trained for regression
         reg_models = [
@@ -141,7 +141,7 @@ class Modeling:
         
     # have to put this in the server file
         pickle.dump(clf[best_model], open('model.pkl', 'wb'))
-        cloud_access('automl-bigdata', 'model.pkl', 'model.pkl')
+        cloud_write('automl-bigdataarch', 'model.pkl', 'model.pkl')
         # db.collection(u'models').document(string_name).set(res)
 
 
@@ -246,10 +246,14 @@ class Modeling:
             best_model = names[acc_list.index(max(acc_list))]
 
         print(best_model, clf[best_model].get_params())
-
+        def cloud_write(bucket_name, blob_name, csv_file):
+            storage_client = storage.Client()
+            bucket = storage_client.bucket(bucket_name)
+            blob = bucket.blob(blob_name)
+            blob.upload_from_filename(csv_file)
         # will remove once added to server file
         pickle.dump(clf[best_model], open('model.pkl', 'wb'))
-        cloud_access('automl-bigdata', 'model.pkl', 'model.pkl')
+        cloud_write('automl-bigdataarch', 'model.pkl', 'model.pkl')
         # db.collection(u'models').document(string_name).set(res)
         return best_model, res
     

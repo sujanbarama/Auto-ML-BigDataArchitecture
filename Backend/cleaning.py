@@ -7,9 +7,9 @@ from sklearn.preprocessing import RobustScaler
 class Cleaning:
         
     def impute(self, data):
-        if 'Target' in data.columns:
-            Target = data[['Target']]
-            data = data.drop('Target', axis = 1)
+        # if 'Target' in data.columns:
+        Target = data[['Target']]
+        data = data.drop('Target', axis = 1)
     
         # checking missing values
         percent_missing = data.isnull().sum() * 100 / data.shape[0]
@@ -36,17 +36,17 @@ class Cleaning:
         data_cat_imputed = data_cat.apply(lambda x: x.fillna(x.value_counts().index[0]))
         
         # concat the imputed dfs
-        if 'Target' in data.columns:
-            imputed_data = pd.concat([imputed_num, data_cat_imputed, Target], axis=1)
-        else:
-            imputed_data = pd.concat([imputed_num, data_cat_imputed], axis=1)
+        # if 'Target' in data.columns:
+        imputed_data = pd.concat([imputed_num, data_cat_imputed, Target], axis=1)
+        # else:
+            # imputed_data = pd.concat([imputed_num, data_cat_imputed], axis=1)
         # return imputed_data
         return imputed_data
     
     def normalize_and_encode(self, imputed_data):
-        if 'Target' in imputed_data.columns:
-            target = imputed_data[['Target']]
-            imputed_data = imputed_data.drop('Target', axis=1)
+        # 'Target' in imputed_data.columns:
+        target = imputed_data[['Target']]
+        imputed_data = imputed_data.drop('Target', axis=1)
         # normalizing numerical columns using robustscalar
         numerical_columns = [x for x in imputed_data.columns if imputed_data[x].dtype in ['int64', 'float64']]
         scalar = RobustScaler(quantile_range=(25, 75))
@@ -64,26 +64,17 @@ class Cleaning:
         data_for_enc.drop(cat_cols_to_drop, axis=1, inplace=True)
         
         # encoding categorical variables
-<<<<<<< Updated upstream
+
         enc_data= pd.get_dummies(data_for_enc, columns=data_for_enc.columns)
+        
     
-        if 'Target' in imputed_data.columns:
-            encoded_data = pd.concat([scaled, enc_data, target], axis=1)
-        else:
-            encoded_data = pd.concat([scaled, enc_data], axis=1)
+        # if 'Target' in imputed_data.columns:
+        encoded_data = pd.concat([scaled, enc_data, target], axis=1)
+        # else:
+        #     encoded_data = pd.concat([scaled, enc_data], axis=1)
         # return imputed_data
 
-=======
-        print(data_for_enc.columns)
-        try:
-            enc_data= pd.get_dummies(data_for_enc, columns=data_for_enc.columns)
-        # print(scaled.columns,1)
-        # print(enc_data.columns,2)
-            encoded_data = pd.concat([scaled, enc_data, target], axis=1)
-        except:
-            
-            encoded_data = scaled.copy()
->>>>>>> Stashed changes
+
         encoded_data.to_csv('upload_encoded.csv',index = False)
         return encoded_data
     
